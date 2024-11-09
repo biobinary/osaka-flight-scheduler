@@ -7,7 +7,20 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <h1>Welcome to Osaka</h1>
-    <p>The Best Flight Scheduler You Can Find.</p>
+    <div class="container">
+        <h1>Jadwal Penerbangan Osaka</h1>
+        <table id="flightTable">
+            <thead>
+                <tr>
+                    <th>Nama Pesawat</th>
+                    <th>Tujuan Keberangkatan</th>
+                    <th>Waktu Keberangkatan</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+        <button>Tambah Penerbangan</button>
+    </div>
 </body>
 </html>
