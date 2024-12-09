@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-12 col-md-8 col-lg-6 form-container">
+        <h2 class="text-center form-title">Search Flights</h2>
+        <form method="POST" action="{{ url_for('search') }}">
+            <div class="mb-3">
+                <label for="criteria" class="form-label">Search By</label>
+                <select class="form-select" id="criteria" name="criteria" required>
+                    <option value="origin">Origin</option>
+                    <option value="destination">Destination</option>
+                    <option value="departure_time">Departure Time</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="value" class="form-label">Search Value</label>
+                <input type="text" class="form-control" id="value" name="value" placeholder="Enter value" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </form>
+    </div>
+</div>
+
+{% if flights %}
+<h3 class="mt-4">Search Results:</h3>
+<table class="table table-striped mt-3">
+    <thead>
+        <tr>
+            <th>Flight Number</th>
+            <th>Origin</th>
+            <th>Destination</th>
+            <th>Departure Time</th>
+            <th>Arrival Time</th>
+            <th>Gate</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for flight in flights %}
+        <tr>
+            <td>{{ flight.flight_number }}</td>
+            <td>{{ flight.origin }}</td>
+            <td>{{ flight.destination }}</td>
+            <td>{{ flight.departure_time }}</td>
+            <td>{{ flight.arrival_time }}</td>
+            <td>{{ flight.gate }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="mt-4">No results found.</p>
+{% endif %}
+{% endblock %}
+
+{% block styles %}
+
+<style>
+
+    .form-container {
+        background-color: #f8f9fa; /* Light gray background */
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        color: #333;
+        margin-top: 50px;  /* Margin atas */
+        margin-bottom: 50px;  /* Margin bawah */
+    }
+
+    .form-title {
+        font-family: 'Arial', sans-serif;
+        font-size: 24px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-control {
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+    }
+
+    .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+    }
+
+    .form-label {
+        font-size: 16px;
+        color: #555;
+    }
+
+</style>
+
+{% endblock %}

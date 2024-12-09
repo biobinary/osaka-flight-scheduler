@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Flight - Flight Management{% endblock %}
+
+{% block content %}
+    <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="col-12 col-md-8 col-lg-6 form-container">
+            <h2 class="mt-5 text-center form-title">Add New Flight</h2>
+            <form method="POST" action="{{ url_for('add_flight') }}">
+                <div class="mb-3">
+                    <label for="flight_number" class="form-label">Flight Number</label>
+                    <input type="text" name="flight_number" id="flight_number" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="origin" class="form-label">Origin</label>
+                    <input type="text" name="origin" id="origin" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="destination" class="form-label">Destination</label>
+                    <input type="text" name="destination" id="destination" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="departure_time" class="form-label">Departure Time</label>
+                    <input type="time" name="departure_time" id="departure_time" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="arrival_time" class="form-label">Arrival Time</label>
+                    <input type="time" name="arrival_time" id="arrival_time" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label for="aircraft_id" class="form-label">Select Aircraft</label>
+                    <select name="aircraft_id" id="aircraft_id" class="form-control" required>
+                        <option value="">Choose an Aircraft</option>
+                        {% for aircraft in aircrafts %}
+                            <option value="{{ aircraft.id }}">{{ aircraft.aircraft_name }} ({{ aircraft.aircraft_code }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Add Flight</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block styles %}
+    <style>
+        /* Custom Styles */
+        .form-container {
+            background-color: #f8f9fa; /* Light gray background */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            color: #333;
+            margin-top: 50px;  /* Margin atas */
+            margin-bottom: 50px;  /* Margin bawah */
+        }
+
+        .form-title {
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-weight: bold;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+
+        /* Add spacing to the form elements */
+        .form-label {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .mb-3 {
+            margin-bottom: 20px !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+{% endblock %}
