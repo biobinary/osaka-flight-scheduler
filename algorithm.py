@@ -1,40 +1,44 @@
-from queue import PriorityQueue
-from models import Gate, GateAssignment, db
 from datetime import datetime, timedelta
+from sqlalchemy import or_, and_
+from models import Gate, GateAssignment, db
 
-def find_available_gate(arrival_time, departure_time):
-    # Fetch all available gates
+def find_available_gate(arrival_time, departure_time, buffer_minutes=30):
+    """
+    Find a gate ensuring no conflicts within buffer time.
+    
+    Args:
+        arrival_time (time): Proposed arrival time
+        departure_time (time): Proposed departure time
+        buffer_minutes (int): Minimum minutes between assignments
+    
+    Returns:
+        int or None: Available gate ID or None if no gate found
+    """
     gates = Gate.query.all()
+    arrival_datetime = datetime.combine(datetime.today(), arrival_time)
+    departure_datetime = datetime.combine(datetime.today(), departure_time)
 
-    # Iterate through each gate
     for gate in gates:
-        # Convert arrival_time and departure_time to datetime objects
-        arrival_datetime = datetime.combine(datetime.today(), arrival_time)
-        departure_datetime = datetime.combine(datetime.today(), departure_time)
-
-        # Check if the gate has overlapping assignments
-        overlapping = GateAssignment.query.filter(
+        # Check for any assignments conflicting within buffer time
+        conflicts = GateAssignment.query.filter(
             GateAssignment.gate_id == gate.gate_id,
-            db.or_(
-                db.and_(GateAssignment.arrival_time <= arrival_datetime, GateAssignment.departure_time > arrival_datetime),
-                db.and_(GateAssignment.arrival_time < departure_datetime, GateAssignment.departure_time >= departure_datetime),
-                db.and_(GateAssignment.arrival_time >= arrival_datetime, GateAssignment.departure_time <= departure_datetime)
+            or_(
+                # New arrival within existing assignment + buffer
+                and_(
+                    GateAssignment.arrival_time - timedelta(minutes=buffer_minutes) < arrival_datetime,
+                    GateAssignment.departure_time + timedelta(minutes=buffer_minutes) > arrival_datetime
+                ),
+                # New departure within existing assignment + buffer
+                and_(
+                    GateAssignment.arrival_time - timedelta(minutes=buffer_minutes) < departure_datetime,
+                    GateAssignment.departure_time + timedelta(minutes=buffer_minutes) > departure_datetime
+                )
             )
         ).first()
 
-        # Ensure a 30-minute buffer time
-        previous_assignment = GateAssignment.query.filter(
-            GateAssignment.gate_id == gate.gate_id,
-            GateAssignment.departure_time <= arrival_datetime - timedelta(minutes=30)
-        ).order_by(GateAssignment.departure_time.desc()).first()
-
-        next_assignment = GateAssignment.query.filter(
-            GateAssignment.gate_id == gate.gate_id,
-            GateAssignment.arrival_time >= departure_datetime + timedelta(minutes=30)
-        ).order_by(GateAssignment.arrival_time.asc()).first()
-
-        if not overlapping and not previous_assignment and not next_assignment:
+        # If no conflicts found, return the gate
+        if not conflicts:
             return gate.gate_id
 
-    # If no gates are available, return None
+    # No available gates found
     return None
