@@ -25,6 +25,6 @@ def find_available_gate(start_time, end_time):
         ).first()
 
         if not overlapping:
-            return gate.id
+            return gate.gate_id
 
     return None

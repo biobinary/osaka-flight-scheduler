@@ -45,20 +45,23 @@ class Gate(db.Model):
 
     def __repr__(self):
         return f"<Gate(gate_id={self.gate_id}, gate='{self.gate}')>"
-    
+
 class GateAssignment(db.Model):
-    
+
     __tablename__ = 'gate_assignment'
-    
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+
     gate_id = db.Column(db.Integer, db.ForeignKey('gate.gate_id'), nullable=False)
     flight_id = db.Column(db.Integer, db.ForeignKey('flight.id'), nullable=False)
     departure_time = db.Column(db.DateTime, nullable=False)
     arrival_time = db.Column(db.DateTime, nullable=False)
 
+    __table_args__ = (
+        db.PrimaryKeyConstraint('gate_id', 'flight_id', name='pk_gate_flight'),
+    )
+
     gate = db.relationship('Gate', backref='assignments', lazy=True)
     flight = db.relationship('Flight', backref='assignments', lazy=True)
 
     def __repr__(self):
-        return (f"<GateAssignment(id={self.id}, gate_id={self.gate_id}, flight_id={self.flight_id}, "
+        return (f"<GateAssignment(gate_id={self.gate_id}, flight_id={self.flight_id}, "
                 f"departure_time='{self.departure_time}', arrival_time='{self.arrival_time}')>")
