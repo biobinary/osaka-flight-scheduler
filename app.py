@@ -53,7 +53,7 @@ def add_flight():
         departure_time = datetime.strptime(request.form['departure_time'], '%H:%M').time()
         arrival_time = datetime.strptime(request.form['arrival_time'], '%H:%M').time()
         aircraft_id = request.form['aircraft_id']
-        
+
         gate_id = find_available_gate(departure_time, arrival_time)
 
         if gate_id is None:
@@ -72,7 +72,6 @@ def add_flight():
 
         db.session.add(flight)
 
-        # Tambahkan ke GateAssignment
         gate_assignment = GateAssignment(
             gate_id=gate_id,
             flight_id=flight.id,

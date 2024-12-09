@@ -7,7 +7,7 @@ def find_available_gate(start_time, end_time):
     pq = PriorityQueue()
 
     def calculate_heuristic(gate):
-        return GateAssignment.query.filter(GateAssignment.gate_id == gate.id).count()
+        return GateAssignment.query.filter(GateAssignment.gate_id == gate.gate_id).count()
 
     for gate in gates:
         score = calculate_heuristic(gate)
@@ -16,7 +16,7 @@ def find_available_gate(start_time, end_time):
     while not pq.empty():
         _, gate = pq.get() 
         overlapping = GateAssignment.query.filter(
-            GateAssignment.gate_id == gate.id,
+            GateAssignment.gate_id == gate.gate_id,
             db.or_(
                 db.and_(GateAssignment.departure_time <= start_time, GateAssignment.arrival_time > start_time),
                 db.and_(GateAssignment.departure_time < end_time, GateAssignment.arrival_time >= end_time),
