@@ -54,8 +54,7 @@ def add_flight():
         arrival_time = datetime.strptime(request.form['arrival_time'], '%H:%M').time()
         aircraft_id = request.form['aircraft_id']
 
-        gate_id = find_available_gate(departure_time, arrival_time)
-
+        gate_id = find_available_gate(arrival_time, departure_time)
         if gate_id is None:
             flash("No available gate for this flight schedule.", "error")
             return redirect(url_for('add_flight'))
@@ -69,17 +68,16 @@ def add_flight():
             gate_id=gate_id,
             aircraft_id=aircraft_id
         )
-
         db.session.add(flight)
+        db.session.commit()
 
         gate_assignment = GateAssignment(
             gate_id=gate_id,
             flight_id=flight.id,
-            start_time=departure_time,
-            end_time=arrival_time
+            arrival_time=arrival_time,
+            departure_time=departure_time
         )
         db.session.add(gate_assignment)
-
         db.session.commit()
 
         flash("Flight added successfully and assigned to gate.", "success")
