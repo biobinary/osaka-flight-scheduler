@@ -9,6 +9,10 @@ app.config.from_object(Config)
 
 db.init_app(app)
 
+@app.route('/landing')
+def landing():
+    return render_template('landing.html')
+
 @app.route('/')
 def home():
     flights = Flight.query.all()
