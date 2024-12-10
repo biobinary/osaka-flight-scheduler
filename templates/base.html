@@ -40,11 +40,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link {{ 'active' if request.endpoint == 'add_flight' }}" href="{{ url_for('add_flight') }}">
-                                <i class="bi bi-plus-circle me-1"></i>Add Flight
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link {{ 'active' if request.endpoint == 'search' }}" href="{{ url_for('search') }}">
                                 <i class="bi bi-search me-1"></i>Search Flights
                             </a>
@@ -79,7 +74,7 @@
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container text-center">
             <span class="text-muted">
-                &copy; Flight Management System. All rights reserved.
+                © 2024 Flight Gate Manager. All Rights Reserved.
             </span>
         </div>
     </footer>
