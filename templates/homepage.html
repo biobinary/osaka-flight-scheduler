@@ -17,6 +17,8 @@
                             <th>Destination</th>
                             <th>Departure Time</th>
                             <th>Arrival Time</th>
+                            <th>Gate</th>
+                            <th>Aircraft</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -28,6 +30,8 @@
                             <td>{{ flight.destination }}</td>
                             <td>{{ flight.departure_time }}</td>
                             <td>{{ flight.arrival_time }}</td>
+                            <td>{{ flight.gate.gate }}</td>
+                            <td>{{ flight.aircraft.aircraft_name }}</td>
                             <td>
                                 <div class="btn-group btn-group-sm" role="group">
                                     <form action="{{ url_for('delete_flight', flight_id=flight.id) }}" method="POST" style="display:inline;">
