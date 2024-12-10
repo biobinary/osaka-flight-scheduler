@@ -3,19 +3,19 @@
 Clone the project
 
 ```bash
-  git clone https://github.com/biobinary/osaka-flight-scheduler.git
+git clone https://github.com/biobinary/osaka-flight-scheduler.git
 ```
 
 Go to the project directory
 
 ```bash
-  cd osaka-flight-scheduler
+cd osaka-flight-scheduler
 ```
 
 Install Depedencies
 
 ```bash
-  pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 Run The project
