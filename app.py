@@ -1,7 +1,7 @@
 from flask import Flask, render_template, redirect, request, url_for, flash
 from datetime import datetime
 from config import Config
-from models import db, Aircraft, Flight, Gate, GateAssignment
+from models import db, Aircraft, Flight, GateAssignment
 from algorithm import find_available_gate
 
 app = Flask(__name__)
