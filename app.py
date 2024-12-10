@@ -44,6 +44,27 @@ def search():
 
     return render_template('search.html', flights=[])
 
+@app.route('/delete_flight/<int:flight_id>', methods=['POST'])
+def delete_flight(flight_id):
+    
+    try:
+        flight = Flight.query.get_or_404(flight_id)
+
+        gate_assignment = GateAssignment.query.filter_by(flight_id=flight_id).first()
+        if gate_assignment:
+            db.session.delete(gate_assignment)
+
+        db.session.delete(flight)
+        db.session.commit()
+
+        flash("Flight deleted successfully.", "success")
+    
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error deleting flight: {str(e)}', 'danger')
+    
+    return redirect(url_for('home'))
+
 @app.route('/add', methods=['GET', 'POST'])
 def add_flight():
     if request.method == 'POST':
